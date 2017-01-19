@@ -7,9 +7,9 @@ var server = restify.createServer();
 //server.use(restify.bodyParser());
 var db = mongojs('mydb', ['mycollection'])
 var data = {
-   "Name": "Sindhu",
+   "Name": "swetha",
     "Qualification": "Masters",
-    "Place" : "Carbondale"
+    "Place" : "csu"
   };
 
   db.mycollection.insert(data, function(err, result) {
