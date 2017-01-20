@@ -1,23 +1,10 @@
- var restify = require('restify');
- var mongojs = require('mongojs');
+var restify = require('restify');
+var mongojs = require('mongojs');
 var server = restify.createServer();
- 
-//server.use(restify.acceptParser(server.acceptable));
-//server.use(restify.queryParser());
-//server.use(restify.bodyParser());
+server.use(restify.bodyParser());
+
+
 var db = mongojs('mydb', ['mycollection'])
-var data = {
-   "Name": "Sindhu",
-    "Qualification": "Masters",
-    "Place" : "Carbondale"
-  };
-
-  db.mycollection.insert(data, function(err, result) {
-    if(err) { throw err; }
-    console.log(result);
-  });
-
-
 
 server.get("/mycollection", function (req, res, next) {
     db.mycollection.find(function (err, mycollection) {
@@ -47,7 +34,7 @@ server.put('/mycollection/:id', function (req, res, next) {
         id: req.params.id
     }, function (err, data) {
         // merge req.params/product with the server/product
- 
+
         var updProd = {}; // updated products 
         // logic similar to jQuery.extend(); to merge 2 objects.
         for (var n in data) {
@@ -59,13 +46,13 @@ server.put('/mycollection/:id', function (req, res, next) {
         db.mycollection.update({
             id: req.params.id
         }, updProd, {
-            multi: false
-        }, function (err, data) {
-            res.writeHead(200, {
-                'Content-Type': 'application/json; charset=utf-8'
+                multi: false
+            }, function (err, data) {
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                });
+                res.end(JSON.stringify(data));
             });
-            res.end(JSON.stringify(data));
-        });
     });
     return next();
 });
